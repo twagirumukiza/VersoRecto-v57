@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verso Recto — V53</title>
+  <meta name="description" content="Verso Recto, jeu de stratégie abstrait avec plateau triangulaire, bascule recto/verso, mode local, mode IA et mode mixte." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header beta-header">
+    <div class="brand-block">
+      <p class="eyebrow">V53 — Victory Planner et anti-stagnation</p>
+      <h1>Verso Recto</h1>
+      <p class="subtitle">Jeu de stratégie abstrait : rapprocher, connecter, basculer, gagner.</p>
+      <div class="hero-tags" aria-label="Fonctionnalités principales">
+        <span>2 à 4 joueurs</span>
+        <span>Humains + IA</span>
+        <span>Classement multijoueur</span>
+        <span>IA Victory Planner</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="soundToggleTop" class="secondary sound-toggle" type="button" aria-pressed="false">🔇 Son</button>
+      <button id="newGameTop" class="secondary">Nouvelle partie</button>
+      <a class="ghost-link" href="online-v39.html">Multijoueur en ligne</a>
+      <a class="ghost-link" href="#rulesSection">Règles</a>
+    </div>
+  </header>
+
+  <main class="layout beta-layout">
+    <section class="panel setup-panel" id="setupPanel">
+      <div class="panel-heading">
+        <p class="section-kicker">Configuration</p>
+        <h2>Créer une partie</h2>
+      </div>
+
+      <p class="muted">
+        Choisissez le mode, le nombre de participants et les couleurs.
+        Les couleurs non choisies restent sur le plateau comme obstacles neutres.
+      </p>
+
+      <div class="mode-cards" aria-label="Modes de jeu disponibles">
+        <article>
+          <strong>Local</strong>
+          <span>joueurs humains sur le même écran</span>
+        </article>
+        <article>
+          <strong>IA</strong>
+          <span>1 humain contre 1 à 3 IA</span>
+        </article>
+        <article>
+          <strong>Mixte</strong>
+          <span>humains et IA combinés librement</span>
+        </article>
+      </div>
+
+      <label class="field">
+        <span>Mode de jeu</span>
+        <select id="gameMode">
+          <option value="local">Local — joueurs humains</option>
+          <option value="ai">Mode IA — 1 humain + 1 à 3 IA</option>
+          <option value="mixed">Mode mixte — humains + IA libres</option>
+          <option value="tournament">Tournoi — élimination (4 joueurs)</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Nombre de participants</span>
+        <select id="playerCount">
+          <option value="2">2 participants</option>
+          <option value="3">3 participants</option>
+          <option value="4">4 participants</option>
+        </select>
+      </label>
+
+      <div id="playerInputs" class="player-inputs"></div>
+
+      <button id="startGame" class="primary start-button">Lancer la partie</button>
+
+      <div class="quick-help">
+        <h3>But du jeu</h3>
+        <p>Être le premier à réunir ses 7 pions en un seul groupe, connectés par les côtés, tous sur la même face.</p>
+        <p id="tournamentHelp" hidden><strong>Mode tournoi :</strong> 4 joueurs (humains ou IA). À chaque manche, le dernier classé est éliminé — ses pions restent figés sur le plateau comme obstacles. Une nouvelle manche démarre aussitôt avec les joueurs restants, jusqu'au champion.</p>
+      </div>
+    </section>
+
+    <section class="game-area">
+      <div class="game-toolbar">
+        <div id="statusCard" class="status-card">
+          <span class="status-label">Statut de la partie</span>
+          <strong id="gameStatus">Configurez une partie</strong>
+        </div>
+        <div class="toolbar-actions">
+          <button id="resetSelection" class="secondary" disabled>Annuler</button>
+          <button id="restartGame" class="secondary" disabled>Recommencer</button>
+          <button id="quitGame" class="secondary danger-button" disabled>Quitter</button>
+          <button id="soundToggle" class="secondary sound-toggle" type="button" aria-pressed="false">🔇 Son</button>
+        </div>
+      </div>
+
+      <div class="board-shell">
+        <div class="board-title-row">
+          <div>
+            <span class="section-kicker">Plateau</span>
+            <h2>72 cases triangulaires</h2>
+          </div>
+          <p class="muted">Point visible = verso</p>
+        </div>
+
+        <div class="board-wrap">
+          <svg id="board" viewBox="0 0 600 600" role="img" aria-label="Plateau Verso Recto"></svg>
+          <div id="roundPauseOverlay" class="round-pause-overlay" hidden>
+            <div class="round-pause-card">
+              <strong id="roundPauseText"></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend beta-legend">
+        <span><i class="dot yellow"></i> Jaune</span>
+        <span><i class="dot red"></i> Rouge</span>
+        <span><i class="dot blue"></i> Bleu</span>
+        <span><i class="dot black"></i> Noir</span>
+        <span><i class="mini-dot"></i> verso</span>
+        <span class="medal-note"><i class="medal-chip medal-gold"></i> 1er</span>
+        <span class="medal-note"><i class="medal-chip medal-silver"></i> 2e</span>
+        <span class="medal-note"><i class="medal-chip medal-bronze"></i> 3e</span>
+      </div>
+
+      <section class="panel rules-panel" id="rulesSection">
+        <div class="panel-heading">
+          <p class="section-kicker">Règles intégrées</p>
+          <h2>Comment jouer</h2>
+        </div>
+
+        <div class="rule-grid">
+          <article>
+            <span class="rule-number">1</span>
+            <h3>Déplacer</h3>
+            <p>À son tour, un joueur déplace un pion vers une case autorisée et libre.</p>
+          </article>
+          <article>
+            <span class="rule-number">2</span>
+            <h3>Basculer</h3>
+            <p>Après chaque déplacement, le pion change de face : recto devient verso, verso devient recto.</p>
+          </article>
+          <article>
+            <span class="rule-number">3</span>
+            <h3>Connecter</h3>
+            <p>Les pions doivent se toucher par un côté. Le contact par une pointe ne compte pas.</p>
+          </article>
+          <article>
+            <span class="rule-number">4</span>
+            <h3>Gagner</h3>
+            <p>La victoire arrive quand les 7 pions sont connectés par côté et sur la même face.</p>
+          </article>
+        </div>
+
+        <details class="rules-details">
+          <summary>Voir les règles avancées</summary>
+          <ul>
+            <li>L’ordre de jeu est tiré aléatoirement au lancement.</li>
+            <li>Si un joueur peut jouer, il doit jouer.</li>
+            <li>Si un joueur est bloqué, il passe automatiquement.</li>
+            <li>En 3 ou 4 joueurs, la partie continue après le premier gagnant pour établir le classement.</li>
+            <li>Les pions des joueurs classés restent sur le plateau et deviennent des obstacles.</li>
+            <li>La règle anti-répétition longue limite les allers-retours répétés du même pion.</li>
+          </ul>
+        </details>
+      </section>
+    </section>
+
+    <aside class="panel side-panel">
+      <div class="panel-heading">
+        <p class="section-kicker">Suivi</p>
+        <h2>Partie</h2>
+      </div>
+
+      <h3>Ordre de jeu</h3>
+      <div id="turnOrder" class="turn-order muted">Aucune partie lancée.</div>
+
+      <h3>Joueur actif</h3>
+      <div id="activePlayer" class="active-player">—</div>
+
+      <h3>Statistiques</h3>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-label">Coups joués</span>
+          <strong id="moveCounter">0</strong>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Durée</span>
+          <strong id="gameTimer">00:00</strong>
+        </div>
+      </div>
+
+      <div id="tournamentPanel" class="tournament-panel" hidden>
+        <h3>Tournoi</h3>
+        <div id="tournamentRound" class="tournament-round"></div>
+        <ol id="tournamentBracket" class="tournament-bracket"></ol>
+      </div>
+
+      <h3>Classement</h3>
+      <ol id="rankingList" class="ranking-list">
+        <li class="muted">Aucun classement pour l’instant.</li>
+      </ol>
+
+      <h3>Historique des coups</h3>
+      <ol id="moveHistory" class="move-history"></ol>
+
+      <h3>Données de partie</h3>
+      <div class="analysis-actions">
+        <button id="exportGameJson" class="secondary" type="button" disabled>Télécharger JSON</button>
+        <button id="exportGameCsv" class="secondary" type="button" disabled>Télécharger CSV</button>
+      </div>
+      <p id="engineStatus" class="engine-status muted">Moteur V53 prêt.</p>
+    </aside>
+  </main>
+
+  <footer class="footer beta-footer">
+    <p>Verso Recto — V53. Concept et règles : Innocent Twagirumukiza.</p>
+  </footer>
+
+  <script src="game.js"></script>
+</body>
+</html>

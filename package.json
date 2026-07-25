@@ -1,0 +1,12 @@
+{
+  "name": "verso-recto",
+  "version": "54.1.0",
+  "private": true,
+  "description": "Verso Recto — jeu de stratégie abstrait. Local (humain/IA) et multijoueur en ligne.",
+  "scripts": {
+    "test": "node tests/smoke-test.js && node tests/path-planner-test.js && node tests/integration-test.js && node tests/online-forfeit-test.js && node tests/local-persistence-test.js && node tests/online-persistence-test.js && node tests/tournament-test.js && node tests/online-tournament-test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

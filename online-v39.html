@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verso Recto — V44 Online</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="online-v39.css" />
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+  <script defer src="online-v39.js"></script>
+</head>
+<body class="online-v37-body">
+  <header class="app-header beta-header">
+    <div class="brand-block">
+      <p class="eyebrow">V44 — multijoueur apprenant</p>
+      <h1>Verso Recto — Online</h1>
+      <p class="subtitle">Salon privé, 2 à 4 joueurs, classement progressif et reprise après rafraîchissement.</p>
+      <div class="hero-tags"><span>2 à 4 joueurs</span><span>Auth anonyme Firebase</span><span>Realtime Database</span><span>Musique + sons</span></div>
+    </div>
+    <div class="header-actions">
+      <button id="soundToggleOnline" class="secondary sound-toggle" type="button" aria-pressed="false">🔇 Son</button>
+      <a class="ghost-link" href="index.html">Retour au jeu</a>
+    </div>
+  </header>
+  <main class="online-v37-layout">
+    <section class="panel online-v37-panel">
+      <div class="panel-heading"><p class="section-kicker">Salon privé</p><h2>Créer ou rejoindre</h2></div>
+      <p class="muted">Cette page utilise le nouveau projet Firebase V37. La V35 reste indépendante.</p>
+      <label class="field"><span>Ton nom</span><input id="playerName" value="Joueur" /></label>
+      <label class="field"><span>Nombre de joueurs</span><select id="maxPlayers"><option value="2">2 joueurs</option><option value="3">3 joueurs</option><option value="4" selected>4 joueurs</option></select></label>
+      <label class="field checkbox-field"><input type="checkbox" id="tournamentMode" /> <span>Mode tournoi (élimination progressive, 4 joueurs obligatoires)</span></label>
+      <div class="online-actions"><button id="createRoom" class="primary" type="button">Créer un salon</button></div>
+      <p id="roomCodeDisplay" class="online-code" hidden>Code : <strong>—</strong></p>
+      <label class="field"><span>Code à rejoindre</span><input id="joinCode" placeholder="Ex. VR-4821" /></label>
+      <div class="online-actions"><button id="joinRoom" class="secondary" type="button">Rejoindre</button><button id="leaveRoom" class="secondary danger-button" type="button" disabled>Quitter</button></div>
+      <div class="online-actions"><button id="startRoom" class="primary" type="button" disabled>Démarrer la partie</button><button id="copyCode" class="secondary" type="button" disabled>Copier le code</button></div>
+      <p id="onlineStatus" class="online-status">Connexion Firebase en attente…</p>
+      <div class="quick-help"><h3>Sécurité V37</h3><p>Chaque joueur est identifié par Firebase Auth anonyme. Les règles Firebase limitent l’écriture aux joueurs inscrits dans le salon.</p></div>
+    </section>
+    <section class="game-area online-v37-game">
+      <div class="game-toolbar"><div class="status-card"><span class="status-label">Statut</span><strong id="gameStatus">Aucune partie en ligne.</strong></div><div class="toolbar-actions">
+          <button id="soundToggleInGame" class="secondary sound-toggle" type="button" aria-pressed="false">🔇 Son</button>
+          <button id="resetSelection" class="secondary" type="button">Annuler</button>
+          <button id="leaveRoomInGame" class="secondary danger-button" type="button" disabled>Quitter</button>
+        </div></div>
+      <div class="board-shell">
+        <svg id="board" class="board-svg" viewBox="0 0 600 600" role="img" aria-label="Plateau Verso Recto Online V37"></svg>
+        <div id="roundPauseOverlay" class="round-pause-overlay" hidden>
+          <div class="round-pause-card">
+            <strong id="roundPauseText"></strong>
+          </div>
+        </div>
+      </div>
+    </section>
+    <aside class="panel side-panel online-v37-side">
+      <h3>Salon</h3><div id="roomInfo" class="turn-order muted">Aucun salon.</div>
+      <h3>Joueurs</h3><div id="playersList" class="turn-order muted">—</div>
+      <h3>Tour</h3><div id="turnInfo" class="active-player">—</div>
+      <div id="tournamentPanel" class="tournament-panel" hidden>
+        <h3>Tournoi</h3>
+        <div id="tournamentRound" class="tournament-round"></div>
+        <ol id="tournamentBracket" class="tournament-bracket"></ol>
+      </div>
+      <h3>Classement</h3><ol id="rankingList" class="ranking-list"><li class="muted">Aucun gagnant pour l’instant.</li></ol>
+      <h3>Historique</h3><ol id="moveHistory" class="move-history"></ol>
+    </aside>
+  </main>
+</body>
+</html>

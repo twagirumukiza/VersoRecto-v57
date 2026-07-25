@@ -1,0 +1,27 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "v37Rooms": {
+      "$room": {
+        ".read": "auth != null && data.child('players').child(auth.uid).exists()",
+        ".write": "auth != null && ((!data.exists() && newData.child('hostUid').val() == auth.uid && newData.child('players').child(auth.uid).exists()) || (data.exists() && data.child('players').child(auth.uid).exists()))",
+        ".validate": "newData.hasChildren(['code','status','hostUid','maxPlayers','players','playerOrder','state','updatedAt'])",
+        "players": {
+          "$uid": {
+            ".write": "auth != null && auth.uid == $uid && (!data.exists() || data.child('uid').val() == auth.uid)",
+            ".validate": "newData.hasChildren(['uid','name','color','seat']) && newData.child('uid').val() == $uid && newData.child('name').isString() && newData.child('name').val().length <= 32 && newData.child('seat').isNumber() && newData.child('seat').val() >= 0 && newData.child('seat').val() <= 3"
+          }
+        },
+        "state": {
+          ".write": "auth != null && data.parent().child('players').child(auth.uid).exists()",
+          ".validate": "newData.hasChildren(['status','players','playerOrder','pieces','history'])"
+        },
+        "status": { ".validate": "newData.val() == 'waiting' || newData.val() == 'playing' || newData.val() == 'finished'" },
+        "maxPlayers": { ".validate": "newData.isNumber() && newData.val() >= 2 && newData.val() <= 4" },
+        "code": { ".validate": "newData.isString() && newData.val() == $room" },
+        "updatedAt": { ".validate": "newData.isNumber() && newData.val() <= now + 10000" }
+      }
+    }
+  }
+}

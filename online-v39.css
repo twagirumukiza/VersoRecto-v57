@@ -1,0 +1,103 @@
+
+.online-v37-layout{display:grid;grid-template-columns:minmax(290px,370px) minmax(0,1fr) minmax(250px,330px);gap:20px;padding:20px}
+.online-v37-panel,.online-v37-side{align-self:start}.online-actions{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}
+.online-status,.online-code{border-radius:14px;padding:12px 14px;margin:12px 0}.online-status{background:rgba(255,235,190,.7);color:#6b4e2e;font-weight:700}
+.online-code{background:#fff8e8;border:2px dashed rgba(122,80,30,.45)}.online-code strong{font-size:1.35rem;letter-spacing:.1em}
+.online-v37-game .board-shell{min-height:min(72vh,760px)}.cell.remote-legal{fill:rgba(255,220,120,.45);stroke-width:2.8}.online-v37-body .piece.my-turn{cursor:pointer}
+.player-seat{border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:8px 10px;margin-bottom:8px;background:rgba(255,255,255,.65)}.player-seat strong{display:block}.secure-note{font-size:.88rem;opacity:.78}
+@media(max-width:1100px){.online-v37-layout{grid-template-columns:1fr}.online-v37-game{order:2}.online-v37-side{order:3}}
+
+
+
+/* V38 — meilleure vision du plateau en cours de partie */
+body.online-playing .beta-header {
+  display: none;
+}
+
+body.online-playing .online-v37-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 300px);
+  padding: 10px;
+  gap: 12px;
+}
+
+body.online-playing .online-v37-panel {
+  display: none;
+}
+
+body.online-playing .online-v37-game .board-shell {
+  min-height: calc(100vh - 120px);
+}
+
+body.online-playing .online-v37-side {
+  max-height: calc(100vh - 20px);
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  body.online-playing .online-v37-layout {
+    grid-template-columns: 1fr;
+  }
+
+  body.online-playing .online-v37-side {
+    max-height: none;
+  }
+}
+
+
+
+/* V39 — corrections online */
+body.online-playing .app-header,
+body.online-playing .beta-header,
+body.online-playing header {
+  display: none !important;
+}
+
+body.online-playing .online-v37-panel,
+body.online-playing .online-v38-panel,
+body.online-playing .online-v39-panel {
+  display: none !important;
+}
+
+body.online-playing .online-v37-layout,
+body.online-playing .online-v38-layout,
+body.online-playing .online-v39-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) !important;
+  padding: 8px !important;
+  gap: 10px !important;
+}
+
+body.online-playing .online-v37-game .board-shell,
+body.online-playing .online-v38-game .board-shell,
+body.online-playing .online-v39-game .board-shell {
+  min-height: calc(100vh - 95px) !important;
+}
+
+body.online-playing .game-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 6px !important;
+}
+
+body.online-playing .online-v37-side,
+body.online-playing .online-v38-side,
+body.online-playing .online-v39-side {
+  max-height: calc(100vh - 16px);
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  body.online-playing .online-v37-layout,
+  body.online-playing .online-v38-layout,
+  body.online-playing .online-v39-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.checkbox-field { display: flex; align-items: center; gap: .5rem; flex-direction: row; }
+.checkbox-field input[type="checkbox"] { width: auto; }
+.tournament-panel { margin-bottom: 1.2rem; padding: .8rem 1rem; border-radius: 14px; background: rgba(198,161,91,.12); border: 1px solid rgba(198,161,91,.35); }
+.tournament-round { font-weight: 700; margin-bottom: .5rem; }
+.tournament-bracket { margin: 0; padding-left: 1.25rem; }
+.tournament-bracket li { margin-bottom: .35rem; }
+.tournament-bracket li.tournament-champion { font-weight: 700; color: #8a6a00; }
